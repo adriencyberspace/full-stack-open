@@ -1,33 +1,5 @@
 import React from 'react'
 
-
-// const Part = (props) => {
-//   return (
-//     <div>
-//       <p>{props.parts[0].name} {props.parts[0].exercises}</p>
-//       <p>{props.parts[1].name} {props.parts[1].exercises}</p>
-//       <p>{props.parts[2].name} {props.parts[2].exercises}</p>
-//     </div>
-//   )
-// }
-
-// const Content = (props) => {
-//   console.log(props)
-//   return (
-//     <div>
-//       <Part parts={props.parts} />
-//     </div>
-//   )
-// }
-
-// const Totals = (props) => {
-//   return (
-//     <div>
-//       <p> Number of exercises {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises} </p>
-//     </div>
-//   )
-// }
-
 const Header = (props) => {
   return (
     <h1>{props.course.name}</h1>
@@ -40,6 +12,17 @@ const Course = (props) => {
     )
 
   return result
+}
+
+const Sum = (props) => {
+
+  const array = props.course.parts.map(part => part.exercises)
+  const reducer = (accumulator, currentValue) => accumulator + currentValue
+  const sum = array.reduce(reducer)
+  
+  return (
+    <p><strong>Total of {sum} exercises</strong></p>
+  )
 }
 
 const App = () => {
@@ -61,6 +44,11 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
+        id: 4
       }
     ]
   }
@@ -70,6 +58,7 @@ const App = () => {
     <div>
       <Header course={course} />
       <Course course={course} />
+      <Sum course={course} />
     </div>
   )
   
