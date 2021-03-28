@@ -1,15 +1,16 @@
 import React from 'react'
 
-const Header = (props) => {
-  return (
-    <h1>{props.course.name}</h1>
-    )
-}
-
 const Course = (props) => {
-  const result = props.course.parts.map(part =>
-    <p key={part.id}>{part.name} {part.exercises}</p>
-    )
+
+  const result = props.courses.map(course =>
+    <div key={course.id}>
+      <h1>{course.name}</h1>
+      {course.parts.map(part =>
+        <p key={part.id}>{part.name} {part.exercises}</p>
+      )}
+      <Sum course={course} />
+    </div>
+  )
 
   return result
 }
@@ -26,39 +27,54 @@ const Sum = (props) => {
 }
 
 const App = () => {
-  const course = {
-    id: 1,
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10,
-        id: 1
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7,
-        id: 2
-      },
-      {
-        name: 'State of a component',
-        exercises: 14,
-        id: 3
-      },
-      {
-        name: 'Redux',
-        exercises: 11,
-        id: 4
-      }
-    ]
-  }
-  
+  const courses = [
+    {
+      name: 'Half Stack application development',
+      id: 1,
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          exercises: 10,
+          id: 1
+        },
+        {
+          name: 'Using props to pass data',
+          exercises: 7,
+          id: 2
+        },
+        {
+          name: 'State of a component',
+          exercises: 14,
+          id: 3
+        },
+        {
+          name: 'Redux',
+          exercises: 11,
+          id: 4
+        }
+      ]
+    }, 
+    {
+      name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ]
+    }
+  ]
   
   return (
     <div>
-      <Header course={course} />
-      <Course course={course} />
-      <Sum course={course} />
+      <Course courses={courses} />
     </div>
   )
   
