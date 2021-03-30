@@ -8,23 +8,28 @@ const Person = ({ person }) => {
 
 const App = () => {
   const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas', id: 1 }
+    { name: 'Arto Hellas' }
   ]) 
   const [ newName, setNewName ] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault()
-    const personObject = {
-      name: newName,
-      id: persons.length + 1
+    const names = persons.map(person => person.name)
+
+    if (names.indexOf(newName) > -1) {
+      alert(`${newName} is already in phonebook`)
+    } else {
+      const personObject = {
+      name: newName
     }
 
     setPersons(persons.concat(personObject))
     setNewName('')
+    }
+
   }
 
   const handleChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
@@ -46,7 +51,7 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {persons.map(person => 
-          <Person key={person.id} person={person} />
+          <Person key={person.name} person={person} />
         )}
       </ul>
     </div>
