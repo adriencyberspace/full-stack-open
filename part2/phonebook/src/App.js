@@ -33,11 +33,6 @@ const App = () => {
     setPersons(persons.concat(personObject))
     setNewName('')
     }
-
-  }
-
-  const searchPerson = (event) => {
-    event.preventDefault()
   }
 
   const handleNameChange = (event) => {
@@ -49,14 +44,9 @@ const App = () => {
   }
 
   const handleSearchChange = (event) => {
-    console.log(event.target.value)
     setSearch(event.target.value)
     setShowAll(false)
-    searchPerson(event)
-    
   }
-
-
 
   const personsToShow = showAll
   ? persons
@@ -72,9 +62,6 @@ const App = () => {
             value={search}
             onChange={handleSearchChange}
           />
-        </div>
-        <div>
-          <button type="submit">add</button>
         </div>
       </form>
       <h2>Phonebook</h2>
