@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
-
-const Person = ({ person }) => {
-  return (
-    <li>{person.name} {person.number}</li>
-  )
-}
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Person from './components/Person'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -15,7 +12,7 @@ const App = () => {
   ])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
-  const [showAll, setShowAll] = useState(false)
+  const [ showAll, setShowAll ] = useState(false)
   const [ search, setSearch ] = useState('')
 
   const addPerson = (event) => {
@@ -47,6 +44,7 @@ const App = () => {
     setSearch(event.target.value)
     setShowAll(false)
   }
+  
 
   const personsToShow = showAll
   ? persons
@@ -54,35 +52,23 @@ const App = () => {
 
   return (
     <div>
-    <h2>Filter</h2>
-      <form>
-        <div>
-          Filter shown with: 
-          <input 
-            value={search}
-            onChange={handleSearchChange}
-          />
-        </div>
-      </form>
-      <h2>Phonebook</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          Name: 
-          <input 
-            value={newName}
-            onChange={handleNameChange}
-          />
-          Name: 
-          <input 
-            value={newNumber}
-            onChange={handleNumberChange}
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+
+    <h2>Phonebook</h2>
+
+    <Filter search={search} handleSearchChange={handleSearchChange}/>
+
+    <h2>Add New Entry</h2>
+    
+    <PersonForm 
+      addPerson={addPerson} 
+      newName={newName}
+      handleNameChange={handleNameChange}
+      newNumber={newNumber}
+      handleNumberChange={handleNumberChange}
+      />
+      
       <h2>Numbers</h2>
+      
       <ul>
         {personsToShow.map(person => 
           <Person key={person.name} person={person} />
