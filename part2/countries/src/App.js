@@ -2,16 +2,39 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 function Display(props) {
-  if (props.countriesToShow.length > 10) {
+
+  if (props.filteredNames.length > 10) {
     return <Error />
   } 
-  
+
+  if (props.filteredNames.length === 1) {
+    const countryNames = props.countries.map(country => country.name)
+    const i = countryNames.indexOf(`${props.filteredNames}`)
+    const current = props.countries[i]
+    console.log(current)
+
+    return (
+      <div>
+        <h2>{current.name}</h2>
+        <div>Capital: {current.capital}</div>
+        <div>Population: {current.population}</div>
+        <h4>Languages:</h4>
+        <ul>
+          {current.languages.map(language =>
+            <li key={language.name}>{language.name}</li>
+            )}
+        </ul>
+        <img style={{ maxWidth: 250 }} src={current.flag} alt={`${current.name} flag`}></img>
+      </div>
+    )
+  }
+
     return (
     <div>
       <ul>
-          {props.countriesToShow.map(name => 
-            <li>{name}</li>
-          )}
+        {props.filteredNames.map(name => 
+          <li key={name}>{name}</li>
+        )}
       </ul> 
     </div>
     )
@@ -23,7 +46,6 @@ function Error() {
 
 const App = () => {
   const [countries, setCountries] = useState([])
-  const [ showAll, setShowAll ] = useState(false)
   const [ search, setSearch ] = useState('')
 
   const hook = () => {
@@ -37,16 +59,18 @@ const App = () => {
   }
   useEffect(hook, [])
 
-  const names = countries.map(country => country.name)
+  
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
-    setShowAll(false)
   }
   
-  const countriesToShow = showAll
-  ? names
-  : names.filter(name => name.toLowerCase().includes(`${search}`.toLowerCase()))
+  const names = countries.map(country => country.name)
+  const filteredNames= names.filter(name => name.toLowerCase().includes(`${search}`.toLowerCase()))
+
+
+
+    
 
   return (
     <div>
@@ -61,7 +85,7 @@ const App = () => {
       </form>
 
       <h2>Countries</h2>
-      <Display countriesToShow={countriesToShow} />
+      <Display key={filteredNames} countries={countries} filteredNames={filteredNames} />
       
     </div>
   )
