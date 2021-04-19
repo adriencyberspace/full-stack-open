@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-function Display(props) {
+const Display = (props) => {
+  // TODO: use SetCountries to filter result!! DUH
 
-  if (props.filteredNames.length > 10) {
+  if (props.countries.length > 10) {
     return <Error />
   } 
 
-  if (props.filteredNames.length === 1) {
-    const countryNames = props.countries.map(country => country.name)
-    const i = countryNames.indexOf(`${props.filteredNames}`)
-    const current = props.countries[i]
-    console.log(current)
-
+  if (props.countries.length === 1) {
+    // TODO: Create Country and CountryInfo components
     return (
       <div>
-        <h2>{current.name}</h2>
-        <div>Capital: {current.capital}</div>
-        <div>Population: {current.population}</div>
-        <h4>Languages:</h4>
-        <ul>
-          {current.languages.map(language =>
-            <li key={language.name}>{language.name}</li>
-            )}
-        </ul>
-        <img style={{ maxWidth: 250 }} src={current.flag} alt={`${current.name} flag`}></img>
+        {props.countries.map(country => 
+          <div>
+            <h2>{country.name}</h2>
+            <div>Capital: {country.capital}</div>
+            <div>Population: {country.population}</div>
+            <h4>Languages:</h4>
+            <ul>
+              {country.languages.map(language =>
+                <li key={language.name}>{language.name}</li>
+                )}
+            </ul>
+            <img style={{ maxWidth: 250 }} src={country.flag} alt={`${country.name} flag`}></img>
+          </div>
+          )}
       </div>
     )
   }
@@ -32,15 +33,15 @@ function Display(props) {
     return (
     <div>
       <ul>
-        {props.filteredNames.map(name => 
-          <li key={name}>{name}</li>
+        {props.countries.map(country => 
+          <li key={country.name}>{country.name}</li>
         )}
       </ul> 
     </div>
     )
 }
 
-function Error() {
+const Error = () => {
   return <div>Too many matches. Please specify another filter.</div>
 }
 
@@ -53,24 +54,21 @@ const App = () => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
       .then(response => {
-        console.log('promise fulfilled')
-        setCountries(response.data)
+        if (search !== '') {
+          const filteredCountries = response.data.filter(country => 
+            country.name.toLowerCase().includes(`${search}`.toLowerCase())
+            )
+            setCountries(filteredCountries)
+        }
       })
   }
-  useEffect(hook, [])
+  useEffect(hook, [search])
 
-  
+  console.log(countries)
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
   }
-  
-  const names = countries.map(country => country.name)
-  const filteredNames= names.filter(name => name.toLowerCase().includes(`${search}`.toLowerCase()))
-
-
-
-    
 
   return (
     <div>
@@ -85,7 +83,7 @@ const App = () => {
       </form>
 
       <h2>Countries</h2>
-      <Display key={filteredNames} countries={countries} filteredNames={filteredNames} />
+      <Display countries={countries} filteredCountries={countries} />
       
     </div>
   )
