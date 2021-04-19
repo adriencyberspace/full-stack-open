@@ -6,9 +6,9 @@ import Display from './components/Display'
 const App = () => {
   const [countries, setCountries] = useState([])
   const [ search, setSearch ] = useState('')
+  const [ weather, setWeather ] = useState('')
 
   const hook = () => {
-    console.log('effect')
     axios
       .get('https://restcountries.eu/rest/v2/all')
       .then(response => {
@@ -21,6 +21,19 @@ const App = () => {
       })
   }
   useEffect(hook, [search])
+
+  const weatherHook = () => {
+    const api_key = process.env.REACT_APP_WEATHERSTACK_KEY
+    if (countries.length === 1) {
+      const capital = countries.map(country => country.capital)
+      axios
+      .get(`http://api.weatherstack.com/current?access_key=${api_key}&query=${capital}&units=f`)
+      .then(response => {
+        setWeather(response.data)
+      })
+    }
+  }
+  useEffect(weatherHook, [countries])
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
@@ -46,7 +59,8 @@ const App = () => {
       <Display 
         countries={countries} 
         filteredCountries={countries}
-        handleButtonClick={handleButtonClick} />
+        handleButtonClick={handleButtonClick}
+        weather={weather} />
       
     </div>
   )

@@ -2,7 +2,7 @@ import React from 'react'
 import Error from './Error'
 import CountryInfo from './CountryInfo'
 
-const Display = ({ countries, handleButtonClick }) => {
+const Display = ({ countries, handleButtonClick, weather }) => {
   
   if (countries.length > 10) {
     return <Error />
@@ -12,7 +12,7 @@ const Display = ({ countries, handleButtonClick }) => {
     return (
       <div>
         {countries.map(country => (
-          <CountryInfo key={country.name} country={country} />
+          <CountryInfo key={country.name} country={country} weather={weather} />
         ))}
       </div>
     )
