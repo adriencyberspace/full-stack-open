@@ -26,6 +26,10 @@ const App = () => {
     setSearch(event.target.value)
   }
 
+  const handleButtonClick = (countryName) => {
+    setSearch(countryName)
+  }
+
   return (
     <div>
       <form>
@@ -39,7 +43,10 @@ const App = () => {
       </form>
 
       <h2>Countries</h2>
-      <Display countries={countries} filteredCountries={countries} />
+      <Display 
+        countries={countries} 
+        filteredCountries={countries}
+        handleButtonClick={handleButtonClick} />
       
     </div>
   )
