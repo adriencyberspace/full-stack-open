@@ -6,7 +6,8 @@ import Display from './components/Display'
 const App = () => {
   const [countries, setCountries] = useState([])
   const [ search, setSearch ] = useState('')
-  const [ weather, setWeather ] = useState('')
+  const [ weather, setWeather ] = useState(null)
+
 
   const hook = () => {
     axios
@@ -29,11 +30,12 @@ const App = () => {
       axios
       .get(`http://api.weatherstack.com/current?access_key=${api_key}&query=${capital}&units=f`)
       .then(response => {
-        setWeather(response.data)
+        setWeather(response.data.current)
       })
     }
   }
   useEffect(weatherHook, [countries])
+  
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
@@ -47,7 +49,7 @@ const App = () => {
     <div>
       <form>
         <div>
-          Filter countries with: 
+          <span>Filter countries with: </span>
           <input 
             value={search}
             onChange={handleSearchChange}

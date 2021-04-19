@@ -1,4 +1,5 @@
 import React from 'react'
+import WeatherInfo from './WeatherInfo'
 
 const CountryInfo = ({ country, weather }) => {
   console.log(weather)
@@ -17,10 +18,7 @@ const CountryInfo = ({ country, weather }) => {
         </ul>
         <img style={{ maxWidth: 250 }} src={country.flag} alt={`${country.name} flag`}></img>
       </div>
-      <h4>Weather in {country.capital}</h4>
-      <div><strong>Temperature: </strong>{weather.current.temperature}° Fahrenheit</div>
-      <img style={{ maxWidth: 250 }} src={weather.current.weather_icons[0]} alt={`${country.name} weather`}></img>
-      <div><strong>Wind: </strong>{weather.current.wind_speed} mph {weather.current.wind_dir}</div>
+      <WeatherInfo key={country.name} country={country} weather={weather} />
     </div>
   )
 }
