@@ -4,10 +4,9 @@ import axios from 'axios'
 import Display from './components/Display'
 
 const App = () => {
-  const [countries, setCountries] = useState([])
+  const [ countries, setCountries ] = useState([])
   const [ search, setSearch ] = useState('')
   const [ weather, setWeather ] = useState(null)
-
 
   const hook = () => {
     axios
@@ -23,6 +22,9 @@ const App = () => {
   }
   useEffect(hook, [search])
 
+  // Problem: When only one country, if I delete letters from the search, the search still triggers the API until search results are more than one country.
+  // If current searched country doesn't equal displayed country, run axios.
+  // setDisplayed? if countries === 1 && displayed != countries 
   const weatherHook = () => {
     const api_key = process.env.REACT_APP_WEATHERSTACK_KEY
     if (countries.length === 1) {
@@ -35,7 +37,6 @@ const App = () => {
     }
   }
   useEffect(weatherHook, [countries])
-  
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value)
@@ -44,6 +45,7 @@ const App = () => {
   const handleButtonClick = (countryName) => {
     setSearch(countryName)
   }
+
 
   return (
     <div>
