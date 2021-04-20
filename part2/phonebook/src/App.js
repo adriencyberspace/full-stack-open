@@ -52,7 +52,6 @@ const App = () => {
     setSearch(event.target.value)
     setShowAll(false)
   }
-  
 
   const personsToShow = showAll
   ? persons
