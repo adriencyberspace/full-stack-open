@@ -25,6 +25,7 @@ const App = () => {
   // Problem: When only one country, if I delete letters from the search, the search still triggers the API until search results are more than one country.
   // If current searched country doesn't equal displayed country, run axios.
   // setDisplayed? if countries === 1 && displayed != countries 
+  // Maybe answer in 2.d.Changing the Importance of Notes
   const weatherHook = () => {
     const api_key = process.env.REACT_APP_WEATHERSTACK_KEY
     if (countries.length === 1) {
