@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Person from './components/Person'
@@ -53,6 +54,14 @@ const App = () => {
     setShowAll(false)
   }
 
+  const deleteThisPerson = id => {
+    if (window.confirm("Do you really want to delete this person?")) {
+      axios.delete(`http://localhost:3001/persons/${id}`)
+      setPersons(persons.filter(p => p.id !== id))
+    }
+    
+  }
+
   const personsToShow = showAll
   ? persons
   : persons.filter(person => person.name.toLowerCase().includes(`${search}`.toLowerCase()))
@@ -78,7 +87,11 @@ const App = () => {
       
       <ul>
         {personsToShow.map(person => 
-          <Person key={person.name} person={person} />
+          <Person 
+            key={person.name} 
+            person={person}
+            deletePerson = {() => deleteThisPerson(person.id)}
+          />
         )}
       </ul>
     </div>

@@ -13,5 +13,5 @@ const create = newObject => {
 
 
 // handles error when trying to just export the object without variable name
-const exportedObject = { getAll, create }
+const exportedObject = { getAll, create}
 export default exportedObject
