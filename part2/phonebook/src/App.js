@@ -12,7 +12,8 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ showAll, setShowAll ] = useState(false)
   const [ search, setSearch ] = useState('')
-  const [ notification, setNotification ] = useState('')
+  const [ notification, setNotification ] = useState(null)
+  const [ notifColor, setNotifColor ] = useState('black')
 
   useEffect(() => {
     noteService
@@ -22,7 +23,7 @@ const App = () => {
       })
   }, [])
 
-  const addPerson = (event, id) => {
+  const addPerson = (event) => {
     event.preventDefault()
     const names = persons.map(person => person.name)
 
@@ -50,6 +51,7 @@ const App = () => {
           setNewName('')
         })
 
+      setNotifColor('green')
       setNotification(
         `${newName}' has been added to phonebook.`
       )
@@ -74,9 +76,22 @@ const App = () => {
   }
 
   const deleteThisPerson = id => {
-    if (window.confirm("Do you really want to delete this person?")) {
-      axios.delete(`http://localhost:3001/persons/${id}`)
-      setPersons(persons.filter(p => p.id !== id))
+    const person = persons.find(p => p.id === id)
+
+    if (window.confirm(`Do you really want to delete ${person.name}?`)) {
+      axios.delete(`http://localhost:3001/persons/${id}`).then(() => 
+        setPersons(persons.filter(p => p.id !== id))
+      ).catch(error => {
+        setNotifColor('red')
+        setNotification(
+          `${person.name} already deleted from phonebook.`
+        )
+        setTimeout(() => {
+          setNotification(null)
+        }, 2000)
+        setPersons(persons.filter(p => p.id !== id))
+      })
+      
     }
     
   }
@@ -89,7 +104,7 @@ const App = () => {
     <div>
 
     <h2>Phonebook</h2>
-    <Notification message={notification} />
+    <Notification message={notification} notifColor={notifColor} />
 
     <Filter search={search} handleSearchChange={handleSearchChange}/>
 
