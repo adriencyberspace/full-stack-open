@@ -3,6 +3,7 @@ import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Person from './components/Person'
+import Notification from './components/Notification'
 import noteService from './services/persons'
 
 const App = () => {
@@ -11,6 +12,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ showAll, setShowAll ] = useState(false)
   const [ search, setSearch ] = useState('')
+  const [ notification, setNotification ] = useState('')
 
   useEffect(() => {
     noteService
@@ -34,23 +36,27 @@ const App = () => {
           .update(changedPerson.id, changedPerson).then(returnedPerson => {
             setPersons(persons.map(person => person.id !== changedPerson.id ? person : returnedPerson))
           })
-
       }
-
-
-
     } else {
       const personObject = {
       name: newName,
       number: newNumber
-    }
+      }
 
-    noteService
-      .create(personObject)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-      })
+      noteService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+        })
+
+      setNotification(
+        `${newName}' has been added to phonebook.`
+      )
+      setTimeout(() => {
+        setNotification(null)
+      }, 2000)
+      
     }
   }
 
@@ -83,6 +89,7 @@ const App = () => {
     <div>
 
     <h2>Phonebook</h2>
+    <Notification message={notification} />
 
     <Filter search={search} handleSearchChange={handleSearchChange}/>
 
