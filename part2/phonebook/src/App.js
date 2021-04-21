@@ -20,12 +20,25 @@ const App = () => {
       })
   }, [])
 
-  const addPerson = (event) => {
+  const addPerson = (event, id) => {
     event.preventDefault()
     const names = persons.map(person => person.name)
 
     if (names.indexOf(newName) > -1) {
-      alert(`${newName} is already in phonebook`)
+
+      if (window.confirm(`${newName} is already in phonebook. Would you like to update their phone number?`)) {
+        const thisPerson = persons.find(person => person.name === newName)
+        const changedPerson = {...thisPerson, number: newNumber}
+
+        noteService
+          .update(changedPerson.id, changedPerson).then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== changedPerson.id ? person : returnedPerson))
+          })
+
+      }
+
+
+
     } else {
       const personObject = {
       name: newName,
