@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Person from './components/Person'
 import Notification from './components/Notification'
-import noteService from './services/persons'
+import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -16,7 +15,7 @@ const App = () => {
   const [ notifColor, setNotifColor ] = useState('black')
 
   useEffect(() => {
-    noteService
+    personService
       .getAll()
       .then(initialPersons => {
         setPersons(initialPersons)
@@ -33,7 +32,7 @@ const App = () => {
         const thisPerson = persons.find(person => person.name === newName)
         const changedPerson = {...thisPerson, number: newNumber}
 
-        noteService
+        personService
           .update(changedPerson.id, changedPerson).then(returnedPerson => {
             setPersons(persons.map(person => person.id !== changedPerson.id ? person : returnedPerson))
           })
@@ -44,7 +43,7 @@ const App = () => {
       number: newNumber
       }
 
-      noteService
+      personService
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
@@ -79,21 +78,23 @@ const App = () => {
     const person = persons.find(p => p.id === id)
 
     if (window.confirm(`Do you really want to delete ${person.name}?`)) {
-      axios.delete(`http://localhost:3001/api/persons/${id}`).then(() => 
-        setPersons(persons.filter(p => p.id !== id))
-      ).catch(error => {
-        setNotifColor('red')
-        setNotification(
-          `${person.name} already deleted from phonebook.`
-        )
-        setTimeout(() => {
-          setNotification(null)
-        }, 2000)
-        setPersons(persons.filter(p => p.id !== id))
-      })
       
-    }
+      personService
+        .remove(id)
+        .then(() => 
+          setPersons(persons.filter(p => p.id !== id)))
+        .catch(error => {
+          setNotifColor('red')
+          setNotification(
+            `${person.name} already deleted from phonebook.`
+          )
+          setTimeout(() => {
+            setNotification(null)
+          }, 2000)
+          setPersons(persons.filter(p => p.id !== id))
+        })
     
+    }
   }
 
   const personsToShow = showAll

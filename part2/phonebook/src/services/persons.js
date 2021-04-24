@@ -16,7 +16,13 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
+const remove = (id) => {
+  const request = axios.delete(`${baseUrl}/${id}`)
+  return request.then(response => response.data)
+}
+
 
 // handles error when trying to just export the object without variable name
-const exportedObject = { getAll, create, update }
+const exportedObject = { getAll, create, update, remove }
+
 export default exportedObject
