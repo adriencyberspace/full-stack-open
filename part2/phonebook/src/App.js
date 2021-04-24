@@ -79,7 +79,7 @@ const App = () => {
     const person = persons.find(p => p.id === id)
 
     if (window.confirm(`Do you really want to delete ${person.name}?`)) {
-      axios.delete(`http://localhost:3001/persons/${id}`).then(() => 
+      axios.delete(`http://localhost:3001/api/persons/${id}`).then(() => 
         setPersons(persons.filter(p => p.id !== id))
       ).catch(error => {
         setNotifColor('red')
