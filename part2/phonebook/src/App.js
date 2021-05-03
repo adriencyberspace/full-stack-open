@@ -48,15 +48,25 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
+          setNewNumber('')
+          setNotifColor('green')
+          setNotification(
+            `${newName}' has been added to phonebook.`
+          )
+          setTimeout(() => {
+            setNotification(null)
+          }, 2000)
+        })
+        .catch(error => {
+          console.log(error.response.data)
+          setNotifColor('red')
+          setNotification(`${error.response.data.error}`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 2000)
         })
 
-      setNotifColor('green')
-      setNotification(
-        `${newName}' has been added to phonebook.`
-      )
-      setTimeout(() => {
-        setNotification(null)
-      }, 2000)
+      
       
     }
   }
