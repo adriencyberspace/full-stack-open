@@ -4,11 +4,6 @@ const dummy = (blogs) => {
   return 1
 }
 
-// const totalLikes = (blogs) => {
-//   const likesArray = blogs.map(blog => blog.likes)
-//   return b
-// }
-
 function totalLikes(blogs) {
   const likesArray = blogs.map(blog => blog.likes)
   const reducer = (sum, val) => sum + val;
@@ -16,7 +11,23 @@ function totalLikes(blogs) {
   return likesArray.reduce(reducer, initialValue);
 }
 
+function favoriteBlog(blogs) {
+  const arr = blogs.map(blog => blog.likes)
+  const max = Math.max(...arr)
+  const index = arr.indexOf(max)
+
+  const res = 
+    {
+      title: `${blogs[index].title}`,
+      author: `${blogs[index].author}`,
+      likes: blogs[index].likes
+    }
+
+  return res
+}
+
 module.exports = {
   dummy,
-  totalLikes
+  totalLikes,
+  favoriteBlog
 }
