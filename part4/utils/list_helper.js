@@ -1,5 +1,3 @@
-const blog = require("../models/blog")
-
 const dummy = (blogs) => {
   return 1
 }
@@ -7,8 +5,7 @@ const dummy = (blogs) => {
 function totalLikes(blogs) {
   const likesArray = blogs.map(blog => blog.likes)
   const reducer = (sum, val) => sum + val;
-  const initialValue = 0;
-  return likesArray.reduce(reducer, initialValue);
+  return likesArray.reduce(reducer, 0);
 }
 
 function favoriteBlog(blogs) {
@@ -16,18 +13,40 @@ function favoriteBlog(blogs) {
   const max = Math.max(...arr)
   const index = arr.indexOf(max)
 
-  const res = 
-    {
-      title: `${blogs[index].title}`,
-      author: `${blogs[index].author}`,
+  return {
+      title: blogs[index].title,
+      author: blogs[index].author,
       likes: blogs[index].likes
     }
+}
 
-  return res
+
+function mostBlogs(blogs) {
+  const authorsArray = blogs.map(blog => blog.author)
+  const countObj = 
+    authorsArray.reduce((sum, current) => {
+    sum[current] ? sum[current]++ : sum[current] = 1
+    return sum
+  }, {})
+
+  let authorMost, max = 0
+
+  for(const [key, value] of Object.entries(countObj)) {
+    if(value > max) {
+      max = value
+      authorMost = key
+    }
+  }
+
+  return {
+    author: authorMost,
+    blogs: max
+  }
 }
 
 module.exports = {
   dummy,
   totalLikes,
-  favoriteBlog
+  favoriteBlog,
+  mostBlogs
 }
