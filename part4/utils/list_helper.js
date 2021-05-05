@@ -1,13 +1,17 @@
+// 4.3 Dummy Test
 const dummy = (blogs) => {
   return 1
 }
 
+// 4.4 Total Likes
 function totalLikes(blogs) {
   const likesArray = blogs.map(blog => blog.likes)
-  const reducer = (sum, val) => sum + val;
-  return likesArray.reduce(reducer, 0);
+  const newest = likesArray.reduce((acc, cur) => acc + cur, 0)
+
+  return newest;
 }
 
+// 4.5 Favorite Blog
 function favoriteBlog(blogs) {
   const arr = blogs.map(blog => blog.likes)
   const max = Math.max(...arr)
@@ -20,13 +24,13 @@ function favoriteBlog(blogs) {
     }
 }
 
-
+// 4.6 Most Blogs
 function mostBlogs(blogs) {
   const authorsArray = blogs.map(blog => blog.author)
   const countObj = 
-    authorsArray.reduce((sum, current) => {
-    sum[current] ? sum[current]++ : sum[current] = 1
-    return sum
+    authorsArray.reduce((acc, cur) => {
+    acc[cur] ? acc[cur]++ : acc[cur] = 1
+    return acc
   }, {})
 
   let authorMost, max = 0
@@ -44,9 +48,30 @@ function mostBlogs(blogs) {
   }
 }
 
+// 4.7 Most Likes
+function mostLikes(blogs) {
+
+  var arr = blogs.map(blog => ({ author: blog.author, likes: blog.likes }));
+
+  const output = arr.reduce((acc, cur) => {
+    let author = cur.author;
+    let found = acc.find(elem => elem.author === author)
+    if (found) found.likes += cur.likes;
+    else acc.push(cur);
+    return acc;
+  }, []);
+
+  const highest = output.reduce((acc, cur) => acc.likes > cur.likes ? acc : cur)
+
+  return highest
+}
+
+
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
