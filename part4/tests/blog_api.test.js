@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const helper = require('./test_helper')
 const app = require('../app')
 
 const api = supertest(app)
@@ -23,11 +24,11 @@ test('the first blog post title is by Adrien', async () => {
   expect(response.body[0].author).toBe('Adrien')
 })
 
-// test('unique identifier is named id', async () => {
-//   const response = await api.get('/api/blogs')
+test('unique identifier is named id', async () => {
+  const response = await helper.existingId()
 
-//   expect(response && response.every(blog => blog && blog.id)).toBeDefined()
-// })
+  expect(response).toBeDefined()
+})
 
 
 afterAll(() => {
