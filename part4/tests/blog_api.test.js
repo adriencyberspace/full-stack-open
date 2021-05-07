@@ -23,6 +23,13 @@ test('the first blog post title is by Adrien', async () => {
   expect(response.body[0].author).toBe('Adrien')
 })
 
+// test('unique identifier is named id', async () => {
+//   const response = await api.get('/api/blogs')
+
+//   expect(response && response.every(blog => blog && blog.id)).toBeDefined()
+// })
+
+
 afterAll(() => {
   mongoose.connection.close()
 })
