@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-const helper = require('./test_helper')
 const app = require('../app')
 
 const api = supertest(app)
@@ -25,9 +24,9 @@ test('the first blog post title is by Adrien', async () => {
 })
 
 test('unique identifier is named id', async () => {
-  const response = await helper.existingId()
+  const response = await api.get('/api/blogs')
 
-  expect(response).toBeDefined()
+  expect(response.body[0].id).toBeDefined()
 })
 
 
