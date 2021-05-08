@@ -16,92 +16,95 @@ beforeEach(async () => {
   await blogObject.save()
 })
 
-test('blog posts are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
+describe('testing initial blog object', () => {
+  test('blog posts are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
 
-// 4.8
-test('there are two blog posts', async () => {
-  const response = await api.get('/api/blogs')
+  // 4.8
+  test('there are two blog posts', async () => {
+    const response = await api.get('/api/blogs')
 
-  expect(response.body).toHaveLength(2)
-})
+    expect(response.body).toHaveLength(2)
+  })
 
+  test('the first blog post title is by Adrien', async () => {
+    const response = await api.get('/api/blogs')
+  
+    expect(response.body[0].author).toBe('Sparky')
+  })
 
-test('the first blog post title is by Adrien', async () => {
-  const response = await api.get('/api/blogs')
+  // 4.9
+  test('unique identifier is named id', async () => {
+    const response = await api.get('/api/blogs')
 
-  expect(response.body[0].author).toBe('Sparky')
-})
-
-// 4.9
-test('unique identifier is named id', async () => {
-  const response = await api.get('/api/blogs')
-
-  expect(response.body[0].id).toBeDefined()
-})
-
-// 4.10
-test('a valid blog post can be added ', async () => {
-  const newBlog = {
-    title: 'I Pee When You Leave',
-    author: "Abby",
-    url: "https://www.google.com",
-    likes: 666
-  }
-
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-
-  const blogsAtEnd = await helper.blogsInDb()
-  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+    expect(response.body[0].id).toBeDefined()
+  })
 
 })
 
-// 4.11
-test('if no likes, set likes to 0', async () => {
-  const newBlog = {
-    title: 'I Pee When You Leave',
-    author: "Abby",
-    url: "https://www.google.com"
-  }
+describe('adding to / editing initial blog object', () => {
+  // 4.10
+  test('a valid blog post can be added ', async () => {
+    const newBlog = {
+      title: 'I Pee When You Leave',
+      author: "Abby",
+      url: "https://www.google.com",
+      likes: 666
+    }
 
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
 
-  const blogsAtEnd = await helper.blogsInDb()
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+  })
 
-  const x = helper.initialBlogs.length
+  // 4.11
+  test('if no likes, set likes to 0', async () => {
+    const newBlog = {
+      title: 'I Pee When You Leave',
+      author: "Abby",
+      url: "https://www.google.com"
+    }
 
-  expect(blogsAtEnd).toHaveLength(x+1)
-  expect(blogsAtEnd[x].likes).toBe(0)
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
 
-})
+    const blogsAtEnd = await helper.blogsInDb()
 
-// 4.12
-test('missing title or url returns 400 error', async () => {
-  const newBlog = {
-    author: "Abby",
-    likes: 5
-  }
+    const x = helper.initialBlogs.length
 
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(400)
+    expect(blogsAtEnd).toHaveLength(x+1)
+    expect(blogsAtEnd[x].likes).toBe(0)
+  })
 
-  const blogsAtEnd = await helper.blogsInDb()
 
-  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  // 4.12
+  test('missing title or url returns 400 error', async () => {
+    const newBlog = {
+      author: "Abby",
+      likes: 5
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
 })
 
 
