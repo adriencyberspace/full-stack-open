@@ -51,4 +51,20 @@ blogsRouter.put('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
+
+
+blogsRouter.patch('/:id', (request, response, next) => {
+  const body = request.body
+
+  const blog = {
+    likes: body.likes
+  }
+
+  Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    .then(updatedBlog => {
+      response.json(updatedBlog)
+    })
+    .catch(error => next(error))
+})
+
 module.exports = blogsRouter
