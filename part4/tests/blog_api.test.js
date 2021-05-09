@@ -31,7 +31,7 @@ describe('testing initial blog object', () => {
     expect(response.body).toHaveLength(2)
   })
 
-  test('the first blog post title is by Adrien', async () => {
+  test('the first blog post title is by Sparky', async () => {
     const response = await api.get('/api/blogs')
   
     expect(response.body[0].author).toBe('Sparky')
