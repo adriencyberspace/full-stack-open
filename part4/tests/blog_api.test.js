@@ -5,6 +5,7 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog') 
+const User = require('../models/user')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -107,6 +108,55 @@ describe('adding to / editing initial blog object', () => {
   })
 })
 
+describe('user add tests', () => {
+  // ...
+
+  test('creation fails with proper statuscode and message if username too short', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'f',
+      name: 'Adrien Young',
+      password: 'urfurf',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    console.log(result.body.error)
+
+    expect(result.body.error).toContain('shorter than the minimum allowed length')
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
+
+  test('creation fails with proper statuscode and message if password too short', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'AdrianaJones',
+      name: 'Adrien Young',
+      password: 'u',
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    console.log(result.body.error)
+
+    expect(result.body.error).toContain('shorter than the minimum allowed length')
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
+})
 
 afterAll(() => {
   mongoose.connection.close()
