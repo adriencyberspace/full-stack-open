@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login' 
 
@@ -11,6 +12,8 @@ const App = () => {
     url: "",
     likes: 0
   })
+  const [notification, setNotification] = useState(null)
+  const [ notifColor, setNotifColor ] = useState('black')
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
@@ -47,7 +50,15 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
+        setNotifColor('green')
+        setNotification(
+          `'${newBlog.title}' by '${newBlog.author}'  added.`
+        )
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
         setNewBlog({title: "", author: "", url: ""})
+
       })
       
   }
@@ -69,8 +80,12 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch (exception) {
-      setTimeout(() => {}, 5000)
+    } catch (error) {
+      setNotifColor('red')
+      setNotification(`${error.response.data.error}`)
+      setTimeout(() => {
+        setNotification(null)
+      }, 2000)
     }
   }
 
@@ -133,12 +148,13 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={notification} notifColor={notifColor} />
       {user === null ?
         loginForm() :
         <div>
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>Logout</button>
-          <br /><br />
+          <h2>create new</h2>
           {blogForm()}
           <br />
           {blogs.map(blog =>
