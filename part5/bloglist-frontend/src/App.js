@@ -15,11 +15,13 @@ const App = () => {
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
 
-  // const blogFormRef = useRef()
+  const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+    blogService
+      .getAll()
+      .then(initialBlogs =>
+      setBlogs( initialBlogs )
     )  
   }, [])
 
@@ -33,7 +35,7 @@ const App = () => {
   }, [])
 
   const addBlog = (blogObject) => {
-    // blogFormRef.current.
+    blogFormRef.current.toggleVisibility()
     blogService
       .create(blogObject)
       .then(returnedBlog => {
@@ -54,16 +56,17 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
+      blogService.setToken(user.token)
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       ) 
-      blogService.setToken(user.token)
+      
       setUser(user)
       setUsername('')
       setPassword('')
-    } catch (error) {
+    } catch (exception) {
       setNotifColor('red')
-      setNotification(`${error.response.data.error}`)
+      setNotification('wrong credentials')
       setTimeout(() => {
         setNotification(null)
       }, 2000)
@@ -88,29 +91,30 @@ const App = () => {
     </Togglable>
   )
 
-  const blogForm = () => {
-    <Togglable buttonLabel='New Blog' >
+  const blogForm = () => (
+    <Togglable buttonLabel='New Blog' ref={blogFormRef}>
       <BlogForm createBlog={addBlog} />
     </Togglable>
-  }
+  )
 
 
 
   return (
     <div>
-      <h2>blogs</h2>
+      <h2>Blogs</h2>
       <Notification message={notification} notifColor={notifColor} />
+      
       {user === null ?
         loginForm() :
         <div>
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>Logout</button>
-          <h2>create new</h2>
+          <div>
           {blogForm()}
-          <br />
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
           )}
+          </div>
 
         </div>
       }
