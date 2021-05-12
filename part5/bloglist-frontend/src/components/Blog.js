@@ -1,7 +1,7 @@
 import React from 'react'
 import Togglable from '../components/Togglable'
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, deleteBlog }) => {
   const blogStyle = {
     color: 'black' ,
     fontSize: 16,
@@ -20,6 +20,7 @@ const Blog = ({ blog, handleLike }) => {
         <button onClick={(event) => handleLike(blog.id)}>Like</button>
       </div> 
       <div>{blog.author}</div>
+      <button onClick={(event) => deleteBlog(blog.id)}>Remove</button>
     </Togglable>
   )
 

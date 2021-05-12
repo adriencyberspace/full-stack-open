@@ -50,22 +50,6 @@ const App = () => {
       })
   }
 
-  const handleLike = async (id) => {
-    // await blogService.update(likedBlog.id, likedBlog)
-    const likedBlog = blogs.find((blog) => blog.id === id)
-    const updatedBlog = {
-      ...likedBlog, 
-      likes:likedBlog.likes + 1}
-
-    await blogService
-      .update(id, updatedBlog)
-      .then(returnedBlog => {
-        setBlogs(blogs.map(blog => 
-          blog.id !== id ? 
-          blog : returnedBlog))
-      })
-  }
-
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -113,6 +97,36 @@ const App = () => {
     </Togglable>
   )
 
+  const handleLike = async (id) => {
+    // await blogService.update(likedBlog.id, likedBlog)
+    const likedBlog = blogs.find(b => b.id === id)
+    const updatedBlog = {
+      ...likedBlog, 
+      likes:likedBlog.likes + 1}
+
+    await blogService
+      .update(id, updatedBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(b => 
+          b.id !== id ? 
+          b : returnedBlog))
+      })
+  }
+
+  const deleteBlog = id => {
+    const blogToDelete = blogs.find(b => b.id === id)
+
+    if (window.confirm(`Do you really want to delete ${blogToDelete.title} by ${blogToDelete.author}?`)) {
+
+    blogService
+      .remove(id)
+      .then(() => 
+        setBlogs(blogs.filter(b => b.id !== id))
+      )
+
+    }
+  }
+
   const blogsByLikes = blogs.sort((a, b) => {
     return b.likes - a.likes
   })
@@ -133,7 +147,8 @@ const App = () => {
             <Blog 
               key={blog.id} 
               blog={blog}
-              handleLike={handleLike} />
+              handleLike={handleLike}
+              deleteBlog={deleteBlog} />
           )}
           </div>
 
