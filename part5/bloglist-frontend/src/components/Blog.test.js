@@ -4,26 +4,56 @@ import { render, fireEvent } from '@testing-library/react'
 import { prettyDOM } from '@testing-library/dom'
 import Blog from './Blog'
 
-test('renders author and title, does not render likes and url', () => {
-  const blog = {
-    author: 'Adrien',
-    title: 'You wish my friend',
-    url: 'www.google.com',
-    likes: 7
-  }
 
-  const component = render(
-    <Blog blog={blog} />
-  )
+describe('<Blog />', () => {
+  let 
+    component,
+    author,
+    title,
+    url,
+    likes
 
-  const author = component.getByText('Adrien')
-  const title = component.getByText('You wish my friend')
-  const url = component.getByText('www.google.com')
-  const likes = component.getByText('Like')
+  beforeEach(() => {
+    const blog = {
+      author: 'Adrien',
+      title: 'You wish my friend',
+      url: 'www.google.com',
+      likes: 7
+    }
 
-  expect(author).toBeVisible()
-  expect(title).toBeVisible()
-  expect(url).not.toBeVisible()
-  expect(likes).not.toBeVisible()
+    component = render(
+      <Blog blog={blog} />
+    )
+
+    author = component.getByText('Adrien')
+    title = component.getByText('You wish my friend')
+    url = component.getByText('www.google.com')
+    likes = component.getByText('Like')
+  })
+
+  // 5.13
+  test('renders author and title, does not render likes and url', () => {
+  
+    expect(author).toBeVisible()
+    expect(title).toBeVisible()
+    expect(url).not.toBeVisible()
+    expect(likes).not.toBeVisible()
+  
+  })
+
+  // 5.14
+  test('renders likes and url when View button is clicked', () => {
+    const button = component.getByText('View')
+    fireEvent.click(button)
+
+    expect(url).toBeVisible()
+    expect(likes).toBeVisible()
+
+  })
+
+
 
 })
+
+
+
