@@ -1,7 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
-import { prettyDOM } from '@testing-library/dom'
 import Blog from './Blog'
 
 
@@ -20,6 +19,8 @@ describe('<Blog />', () => {
       url: 'www.google.com',
       likes: 7
     }
+
+    const thisBlog = {}
 
     component = render(
       <Blog blog={blog} />
@@ -48,12 +49,31 @@ describe('<Blog />', () => {
 
     expect(url).toBeVisible()
     expect(likes).toBeVisible()
-
   })
-
-
 
 })
 
+// 5.15
+test('if Like button is clicked twice, event handler is called twice', () => {
+  const blog = {
+    author: 'Adrien',
+    title: 'You wish my friend',
+    url: 'www.google.com',
+    likes: 7
+  }
+
+  const mockHandler = jest.fn()
+
+  const component = render(
+    <Blog blog={blog} handleLike={mockHandler} />
+  )
+
+  const button = component.getByText('Like')
+  fireEvent.click(button)
+  fireEvent.click(button)
+
+  expect(mockHandler.mock.calls).toHaveLength(2)
+
+})
 
 
