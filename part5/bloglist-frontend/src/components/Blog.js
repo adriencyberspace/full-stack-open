@@ -14,26 +14,26 @@ const Blog = ({ blog, handleLike, deleteBlog }) => {
 
   const blogView = () => (
     <Togglable buttonLabel='View' buttonClose='Hide'>
-      <div>{blog.url}</div> 
+      <div>{blog.url}</div>
       <div>
         {blog.likes}
         <button onClick={(event) => handleLike(blog.id)}>Like</button>
-      </div> 
+      </div>
       <div>{blog.author}</div>
       <button onClick={(event) => deleteBlog(blog.id)}>Remove</button>
     </Togglable>
   )
 
   return (
-  <div style={blogStyle}>
-    <div>
-      {blog.title}
-      {blogView()}
+    <div style={blogStyle}>
+      <div>
+        {blog.title}
+        {blogView()}
+      </div>
+
     </div>
-    
-  </div> 
   )
-  
-  }
+
+}
 
 export default Blog

@@ -10,7 +10,7 @@ const Notification = ({ message, notifColor }) => {
     marginBottom: 10,
     width: 500
   }
-  
+
   if (message === null) {
     return null
   }
