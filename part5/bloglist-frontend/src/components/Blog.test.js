@@ -10,20 +10,22 @@ describe('<Blog />', () => {
     author,
     title,
     url,
-    likes
+    likes,
+    blog,
+    mockHandler
 
   beforeEach(() => {
-    const blog = {
+    blog = {
       author: 'Adrien',
       title: 'You wish my friend',
       url: 'www.google.com',
       likes: 7
     }
 
-    const thisBlog = {}
+    mockHandler = jest.fn()
 
     component = render(
-      <Blog blog={blog} />
+      <Blog blog={blog} handleLike={mockHandler} />
     )
 
     author = component.getByText('Adrien')
@@ -51,29 +53,17 @@ describe('<Blog />', () => {
     expect(likes).toBeVisible()
   })
 
+  // 5.15
+  test('if Like button is clicked twice, event handler is called twice', () => {
+  
+    const button = component.getByText('Like')
+    fireEvent.click(button)
+    fireEvent.click(button)
+  
+    expect(mockHandler.mock.calls).toHaveLength(2)
+  
+  })
 })
 
-// 5.15
-test('if Like button is clicked twice, event handler is called twice', () => {
-  const blog = {
-    author: 'Adrien',
-    title: 'You wish my friend',
-    url: 'www.google.com',
-    likes: 7
-  }
-
-  const mockHandler = jest.fn()
-
-  const component = render(
-    <Blog blog={blog} handleLike={mockHandler} />
-  )
-
-  const button = component.getByText('Like')
-  fireEvent.click(button)
-  fireEvent.click(button)
-
-  expect(mockHandler.mock.calls).toHaveLength(2)
-
-})
 
 
