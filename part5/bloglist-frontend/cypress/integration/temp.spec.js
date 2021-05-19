@@ -39,28 +39,33 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.login({ username: 'Newnew', password: 'urfurf' })
+      cy.contains('log in').click()
+      cy.get('#username').type('Newnew')
+      cy.get('#password').type('urfurf')
+      cy.get('#login-button').click()
     })
 
-    it('A blog can be created', function() {
+    it('A blog can be created and liked', function() {
       cy.contains('New Blog').click()
       cy.get('#title').type('New User')
       cy.get('#author').type('Cypress Blog Post')
       cy.get('#url').type('www.cypress.com')
       cy.contains('save').click()
       cy.contains('Cypress Blog Post')
+
+      cy.contains('View').click()
+      cy.contains('Like').click()
     })
 
-
-    describe('and a blog exists', function () {
-      beforeEach(function () {
-        cy.createBlog({ title: 'Sparky blog', author: 'Sparky', url: 'www.sparky.com' })
+    describe('when logged in', function() {
+      beforeEach(function() {
+        cy.login({ username: 'Newnew', password: 'urfurf' })
+      })
+  
+      it('A blog can be created', function() {
+        cy.contains('New User')
       })
 
-      it('it can be liked', function () {
-        cy.contains('View').click()
-        cy.contains('Like').click()
-      })
     })
   })
 })
