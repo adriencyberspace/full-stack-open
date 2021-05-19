@@ -68,5 +68,32 @@ describe('Blog app', function() {
         cy.get('html').should('not.contain', 'Sparky blog')
       })
     })
+
+    describe('and a multiple blogs exist', function () {
+      beforeEach(function () {
+        cy.createBlog({ title: 'Blog One', author: 'New User', url: 'www.sparky.com', likes: 80 })
+        cy.createBlog({ title: 'Blog Two', author: 'Sparky', url: 'www.sparky.com', likes: 4 })
+        cy.createBlog({ title: 'Blog Three', author: 'Abby', url: 'www.abby.com', likes: 900 })
+      })
+
+      it('all can be viewed', function () {
+        cy.contains('Blog One').siblings().find('button').first().as('viewButton')
+        cy.get('@viewButton').click()
+
+        cy.contains('Blog Two').siblings().find('button').first().as('viewButton')
+        cy.get('@viewButton').click()
+
+        cy.contains('Blog Three').siblings().find('button').first().as('viewButton')
+        cy.get('@viewButton').click()
+      })
+
+      it('first blog has 900 likes', function () {
+        cy.contains('View').click()
+        cy.get('.like').parent().as('likesCount')
+        cy.get('@likesCount').contains(900)
+      })
+
+
+    })
   })
 })

@@ -17,7 +17,7 @@ const Blog = ({ blog, handleLike, deleteBlog }) => {
       <div>{blog.url}</div>
       <div>
         {blog.likes}
-        <button onClick={() => handleLike(blog.id)}>Like</button>
+        <button className="like" onClick={() => handleLike(blog.id)}>Like</button>
       </div>
       <button onClick={() => deleteBlog(blog.id)}>Remove</button>
     </Togglable>
