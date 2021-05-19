@@ -60,7 +60,7 @@ describe('Blog app', function() {
       it('it can be liked', function () {
         cy.contains('View').click()
         cy.contains('Like').click()
-      })
+      }) 
     })
   })
 })
