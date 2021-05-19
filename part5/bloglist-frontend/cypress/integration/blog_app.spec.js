@@ -61,6 +61,12 @@ describe('Blog app', function() {
         cy.contains('View').click()
         cy.contains('Like').click()
       }) 
+
+      it('it can be removed by user', function () {
+        cy.contains('View').click()
+        cy.contains('Remove').click()
+        cy.get('html').should('not.contain', 'Sparky blog')
+      })
     })
   })
 })
