@@ -92,8 +92,6 @@ describe('Blog app', function() {
         cy.get('.like').parent().as('likesCount')
         cy.get('@likesCount').contains(900)
       })
-
-
     })
   })
 })
