@@ -4,8 +4,12 @@ const initialState = [{
   id: 38234
 }, {
   content: "This is another anecdote test",
-  votes: 0,
+  votes: 77,
   id: 38288
+}, {
+  content: "Third test",
+  votes: 50,
+  id: 38222
 }]
 
 const counterReducer = (state = initialState, action) => {
