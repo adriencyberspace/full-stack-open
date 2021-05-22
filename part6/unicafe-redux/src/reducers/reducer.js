@@ -1,4 +1,14 @@
-const counterReducer = (state = [], action) => {
+const initialState = [{
+  content: "This is an anecdote test",
+  votes: 0,
+  id: 38234
+}, {
+  content: "This is another anecdote test",
+  votes: 0,
+  id: 38288
+}]
+
+const counterReducer = (state = initialState, action) => {
   console.log(action)
   switch (action.type) {
     case 'NEW_ANECDOTE':
@@ -8,7 +18,7 @@ const counterReducer = (state = [], action) => {
       const anecdoteToChange = state.find(a => a.id === id)
       const changedAnecdote = { 
         ...anecdoteToChange, 
-        vote: state.vote + 1
+        votes: anecdoteToChange.votes + 1
       }
       return state.map(anecdote =>
         anecdote.id !== id ? anecdote : changedAnecdote 
