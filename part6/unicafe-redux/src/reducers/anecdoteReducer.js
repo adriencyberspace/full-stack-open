@@ -1,6 +1,6 @@
 const initialState = [{
   content: "This is an anecdote test",
-  votes: 0,
+  votes: 68,
   id: 38234
 }, {
   content: "This is another anecdote test",
@@ -8,7 +8,7 @@ const initialState = [{
   id: 38288
 }, {
   content: "Third test",
-  votes: 50,
+  votes: 82,
   id: 38222
 }]
 
