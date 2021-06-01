@@ -28,10 +28,7 @@ const AnecdoteList = () => {
 
   const vote = (anecdote) => {
     dispatch(addVoteTo(anecdote))
-    dispatch(displayNotification(`You voted "${anecdote.content}"`))
-    setTimeout(() => {
-      dispatch(displayNotification(null))
-    }, 5000)
+    dispatch(displayNotification(`You voted "${anecdote.content}"`, 5))
   }
 
   const anecdotesByVotes = anecdotes.sort((a, b) => {
