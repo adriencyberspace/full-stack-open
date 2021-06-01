@@ -1,3 +1,4 @@
+import anecdotes from '../services/anecdotes'
 import anecdoteService from '../services/anecdotes'
 
 const anecdoteReducer = (state = [], action) => {
@@ -10,7 +11,7 @@ const anecdoteReducer = (state = [], action) => {
     case 'INIT_ANECDOTES':
       return action.data
     case 'VOTE':
-      const id = action.data.id
+      const id = action.data
       const anecdoteToChange = state.find(a => a.id === id)
       const changedAnecdote = { 
         ...anecdoteToChange, 
@@ -43,10 +44,13 @@ export const initializeAnecdotes = () => {
   }
 }
 
-export const addVoteTo = (id) => {
-  return {
-    type: 'VOTE',
-    data: { id }
+export const addVoteTo = (anecdote) => {
+  return async (dispatch) => {
+    await anecdoteService.vote({ ...anecdote, votes: anecdote.votes + 1 })
+    dispatch({
+      type: 'VOTE',
+      data: anecdote.id,
+    })
   }
 }
 
