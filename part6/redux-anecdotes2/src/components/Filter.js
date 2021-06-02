@@ -1,16 +1,10 @@
 import React from 'react'
 import { filterChange } from '../reducers/filterReducer'
-import { useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 
-const Filter = () => {
-  const dispatch = useDispatch()
-
+const Filter = (props) => {
   const handleChange = (event) => {
-    dispatch(filterChange(event.target.value))
-    // if (event.target.value !== '') {
-    //   anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(`${event.target.value}`))
-    // }
-    // input-field value is in variable event.target.value
+    props.filterChange(event.target.value)
   }
 
   const style = {
@@ -24,4 +18,15 @@ const Filter = () => {
   )
 }
 
-export default Filter
+const mapDispatchToProps = dispatch => {
+  return {
+    filterChange: value => {
+      dispatch(filterChange(value))
+    },
+  }
+}
+
+export default connect(
+  null, 
+  mapDispatchToProps
+)(Filter)
