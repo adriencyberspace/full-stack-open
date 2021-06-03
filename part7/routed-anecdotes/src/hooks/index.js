@@ -12,11 +12,20 @@ export const useField = (type) => {
     setValue('')
   }
 
+  const selectAttributes = () => {
+    return {
+      type,
+      value,
+      onChange
+    }
+  }
+
   return {
     type,
     value,
     onChange,
-    reset
+    reset,
+    selectAttributes
   }
 }
 
