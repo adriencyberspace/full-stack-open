@@ -4,16 +4,26 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import { displayNotification } from './reducers/notificationReducer'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import  { useSelector, useDispatch } from 'react-redux'
+
+
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [notification, setNotification] = useState(null)
-  const [ notifColor, setNotifColor ] = useState('black')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const dispatch = useDispatch()
+
+  // Can delete these?
+  // const [notification, setNotification] = useState(null)
+  // const [ notifColor, setNotifColor ] = useState('black')
+
+  const notification = useSelector(state => state)
 
   const blogFormRef = useRef()
 
@@ -40,13 +50,13 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setNotifColor('green')
-        setNotification(
-          `'${blogObject.title}' by '${blogObject.author}'  added.`
-        )
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)
+        // setNotifColor('green')
+        // setNotification(
+        //   `'${blogObject.title}' by '${blogObject.author}'  added.`
+        // )
+        // setTimeout(() => {
+        //   setNotification(null)
+        // }, 5000)
       })
   }
 
@@ -65,11 +75,11 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setNotifColor('red')
-      setNotification('wrong credentials')
-      setTimeout(() => {
-        setNotification(null)
-      }, 2000)
+      // setNotifColor('red')
+      // setNotification('wrong credentials')
+      // setTimeout(() => {
+      //   setNotification(null)
+      // }, 2000)
     }
   }
 
@@ -110,6 +120,8 @@ const App = () => {
         setBlogs(blogs.map(b =>
           b.id !== id ?
             b : returnedBlog))
+        dispatch(displayNotification(`${returnedBlog.title} liked`, 5))
+        console.log('HELLO')
       })
   }
 
@@ -134,7 +146,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <Notification message={notification} notifColor={notifColor} />
+      <Notification message={notification} /*notifColor={notifColor}*/ />
 
       {user === null ?
         loginForm() :
