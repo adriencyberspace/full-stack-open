@@ -1,0 +1,9 @@
+Web Sequence Diagram - /new_note_spa
+
+browser-->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser: HTTP 201
+
+note over server:
+server returns HTTP 201 which means request
+has succeeded and resource 'note' has been created
+end note
