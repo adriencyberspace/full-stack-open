@@ -50,13 +50,7 @@ const App = () => {
       .create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        // setNotifColor('green')
-        // setNotification(
-        //   `'${blogObject.title}' by '${blogObject.author}'  added.`
-        // )
-        // setTimeout(() => {
-        //   setNotification(null)
-        // }, 5000)
+        dispatch(displayNotification(`'${blogObject.title}' by '${blogObject.author}'  added.`, 5))
       })
   }
 
@@ -75,11 +69,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      // setNotifColor('red')
-      // setNotification('wrong credentials')
-      // setTimeout(() => {
-      //   setNotification(null)
-      // }, 2000)
+      dispatch(displayNotification('wrong credentials!', 5))
     }
   }
 
@@ -121,7 +111,6 @@ const App = () => {
           b.id !== id ?
             b : returnedBlog))
         dispatch(displayNotification(`${returnedBlog.title} liked`, 5))
-        console.log('HELLO')
       })
   }
 
@@ -146,7 +135,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <Notification message={notification} /*notifColor={notifColor}*/ />
+      <Notification message={notification}/>
 
       {user === null ?
         loginForm() :
