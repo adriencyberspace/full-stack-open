@@ -23,6 +23,11 @@ let authors = [
   { 
     name: 'Sandi Metz', // birthyear not known
     id: "afa5b6f3-344d-11e9-a414-719c6709cf3e",
+  },
+  {
+    name: 'Adrien Young',
+    born: 1990,
+    id: "afa5b6f7-344d-11e9-a414-719c6729cf3e"
   }
 ]
 
@@ -76,13 +81,34 @@ let books = [
     id: "afa5de04-344d-11e9-a414-719c6709cf3e",
     genres: ['classic', 'revolution']
   },
+  {
+    title: 'Bing Bang Bong',
+    published: 1992,
+    author: 'Adrien Young',
+    id: "afa5ff04-344d-11e9-a414-719c6709cf5e",
+    genres: ['design', 'revolution']
+  },
+  {
+    title: 'Sing Sang Song',
+    published: 1993,
+    author: 'Adrien Young',
+    id: "afa5ff04-344d-11e9-a414-719c6709cf5e",
+    genres: ['design', 'revolution']
+  }
 ]
 
 const typeDefs = gql`
+  type Author {
+    name: String!
+    id: ID!
+    born: Int
+    bookCount: Int!
+  }
+
   type Book {
     title: String!
     published: Int!
-    author: String!
+    author: Author!
     id: ID!
     genres: [String!]!
   }
@@ -91,15 +117,28 @@ const typeDefs = gql`
     authorCount: Int!
     bookCount: Int!
     allBooks: [Book!]!
+    allAuthors: [Author!]!
   }
 `
+// add section to author, where name equals book author. how?
 
 const resolvers = {
   Query: {
     authorCount: () => authors.length,
     bookCount: () => books.length, 
-    allBooks: () => books
+    allBooks: () => books,
+    allAuthors: () => {
+      // Object to store author names and their book counts
+      const authorsBookCount = authors.map((author) =>
+        books.filter((book) => book.author === author.name)
+      )
 
+      return authorsBookCount.map((item) => ({
+        name: item[0].author,
+        bookCount: item.length
+        
+      }))
+    }
   }
 }
 
