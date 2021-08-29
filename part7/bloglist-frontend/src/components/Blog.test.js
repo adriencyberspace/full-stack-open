@@ -5,7 +5,7 @@ import Blog from './Blog'
 
 
 describe('<Blog />', () => {
-  let 
+  let
     component,
     author,
     title,
@@ -36,12 +36,12 @@ describe('<Blog />', () => {
 
   // 5.13
   test('renders author and title, does not render likes and url', () => {
-  
+
     expect(author).toBeVisible()
     expect(title).toBeVisible()
     expect(url).not.toBeVisible()
     expect(likes).not.toBeVisible()
-  
+
   })
 
   // 5.14
@@ -55,13 +55,13 @@ describe('<Blog />', () => {
 
   // 5.15
   test('if Like button is clicked twice, event handler is called twice', () => {
-  
+
     const button = component.getByText('Like')
     fireEvent.click(button)
     fireEvent.click(button)
-  
+
     expect(mockHandler.mock.calls).toHaveLength(2)
-  
+
   })
 })
 

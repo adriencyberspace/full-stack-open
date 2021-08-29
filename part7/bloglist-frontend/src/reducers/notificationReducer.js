@@ -17,8 +17,7 @@ export const displayNotification = (notification, time) => {
         dispatch({
           type: 'DISPLAY_NOTIFICATION',
           data: {
-            notification: null,
-            notifColor: 'black'
+            notification: null
           },
         }),
       time * 1000
@@ -27,8 +26,7 @@ export const displayNotification = (notification, time) => {
     dispatch({
       type: 'DISPLAY_NOTIFICATION',
       data: {
-        notification,
-        notifColor: 'green'
+        notification
       },
     })
 

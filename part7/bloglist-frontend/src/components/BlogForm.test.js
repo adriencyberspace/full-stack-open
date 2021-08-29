@@ -16,14 +16,14 @@ test('<BlogForm /> correct details from input', () => {
   const url = component.container.querySelector('#url')
   const form = component.container.querySelector('form')
 
-  fireEvent.change(title, { 
-    target: { value: 'Gremlins R Us' } 
+  fireEvent.change(title, {
+    target: { value: 'Gremlins R Us' }
   })
-  fireEvent.change(author, { 
-    target: { value: 'Sparky' } 
+  fireEvent.change(author, {
+    target: { value: 'Sparky' }
   })
-  fireEvent.change(url, { 
-    target: { value: 'www.sparksemall.com' } 
+  fireEvent.change(url, {
+    target: { value: 'www.sparksemall.com' }
   })
   fireEvent.submit(form)
 

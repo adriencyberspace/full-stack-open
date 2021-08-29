@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-
 import PropTypes from 'prop-types'
 
 const BlogForm = ({ createBlog }) => {
@@ -14,7 +13,7 @@ const BlogForm = ({ createBlog }) => {
     setNewBlog({ ...newBlog, [event.target.name]: event.target.value })
   }
 
-  const addBlog = (event) => {
+  const addBlog = async (event) => {
     event.preventDefault()
     createBlog({
       title: newBlog.title,
