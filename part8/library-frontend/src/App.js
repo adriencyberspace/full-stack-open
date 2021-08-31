@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react'
 import Authors from './components/Authors'
 import Books from './components/Books'
@@ -23,7 +22,7 @@ const App = () => {
         show={page === 'books'}
       />
 
-      <NewBook
+      <NewBook 
         show={page === 'add'}
       />
 
