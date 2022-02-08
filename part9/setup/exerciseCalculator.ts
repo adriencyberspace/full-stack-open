@@ -8,7 +8,29 @@ interface Result {
   average: number
 }
 
-const calculateExercises = (dailyExerciseHours: number[], targetHours: number): Result => {
+interface calculateExerciseValues {
+  value1: number[];
+  value2: number;
+}
+
+const parseArguments = (args: Array<string>): calculateExerciseValues => {
+  if (args.length < 4) throw new Error('Not enough arguments');
+  if (args.length > 4) throw new Error('Too many arguments');
+  const array = JSON.parse(process.argv[2]);
+
+  // NaN is type number so we have to add this logic to throw error if NaN is returned
+  if ( Array.isArray(array) && !isNaN(Number(args[3]))) {
+    return {
+      value1: array,
+      value2: Number(args[3])
+    }
+  } else {
+    throw new Error('Provided values were not the right types!');
+  }
+
+}
+
+const calculateExercises = (dailyExerciseHours: number[], targetHours: number) => {
 
   const trainingDays = dailyExerciseHours.filter(day => day > 0);
   const periodLength = dailyExerciseHours.length;
@@ -50,7 +72,16 @@ const calculateExercises = (dailyExerciseHours: number[], targetHours: number): 
     average
   };
 
-  return object;
+  console.log(object)
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1] , 1))
+try {
+  const { value1, value2 } = parseArguments(process.argv);
+  calculateExercises(value1, value2);
+} catch (error: unknown) {
+  let errorMessage = 'Something bad happened.'
+  if (error instanceof Error) {
+    errorMessage += ' Error: ' + error.message;
+  }
+  console.log(errorMessage);
+}
