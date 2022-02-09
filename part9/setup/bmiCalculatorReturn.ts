@@ -1,4 +1,4 @@
-// Command line BMI Calculator
+// Calculator with returns, since the other one is supposed to work in command line
 
 // Command line arguments
 interface bmiInputValues {
@@ -22,20 +22,6 @@ const parseBmiArguments = (args: Array<string>): bmiInputValues => {
   }
 }
 
-const calculateBmi = (height: number, weight: number) => {
-  const bmi = (weight/((height*height)/100))*100;
-
-  if (bmi < 18.5){
-    console.log("Underweight (unhealthy weight)");
-  } else if (bmi >= 18.5 && bmi < 24.9){
-    console.log("Normal (healthy weight)");
-  } else if (bmi >= 24.9 && bmi < 29.9){
-    console.log("Overweight (unhealthy weight)");
-  } else {
-    console.log("Obese (unhealthy weight)");
-  }
-}
-
 const calculateBmiWithReturn = (height: number, weight: number) => {
   const bmi = (weight/((height*height)/100))*100;
 
@@ -52,7 +38,7 @@ const calculateBmiWithReturn = (height: number, weight: number) => {
 
 try {
   const { value1, value2 } = parseBmiArguments(process.argv);
-  calculateBmi(value1, value2);
+  calculateBmiWithReturn(value1, value2);
 } catch (error: unknown) {
   let errorMessage = 'Something bad happened.'
   if (error instanceof Error) {
