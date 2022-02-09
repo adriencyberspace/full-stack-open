@@ -86,6 +86,7 @@ const calculateExercises = (dailyExerciseHours: number[], targetHours: number) =
     average
   }
 
+  // Console log instead of return to keep everything in command line
   console.log(object)
 }
 
