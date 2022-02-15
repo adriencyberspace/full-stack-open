@@ -16,11 +16,11 @@ const parseBmiArguments = (args: Array<string>): bmiInputValues => {
     return {
       value1: Number(args[2]),
       value2: Number(args[3])
-    }
+    };
   } else {
     throw new Error('Provided values were not numbers!');
   }
-}
+};
 
 const calculateBmi = (height: number, weight: number) => {
   const bmi = (weight/((height*height)/100))*100;
@@ -34,7 +34,7 @@ const calculateBmi = (height: number, weight: number) => {
   } else {
     console.log("Obese (unhealthy weight)");
   }
-}
+};
 
 const calculateBmiWithReturn = (height: number, weight: number) => {
   const bmi = (weight/((height*height)/100))*100;
@@ -48,17 +48,17 @@ const calculateBmiWithReturn = (height: number, weight: number) => {
   } else {
     return "Obese (unhealthy weight)";
   }
-}
+};
 
 try {
   const { value1, value2 } = parseBmiArguments(process.argv);
   calculateBmi(value1, value2);
 } catch (error: unknown) {
-  let errorMessage = 'Something bad happened.'
+  let errorMessage = 'Something bad happened.';
   if (error instanceof Error) {
     errorMessage += ' Error: ' + error.message;
   }
   console.log(errorMessage);
 }
 
-export default calculateBmiWithReturn
+export default calculateBmiWithReturn;

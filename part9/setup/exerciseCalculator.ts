@@ -21,7 +21,7 @@ const parseArguments = (args: Array<string>): calculateExerciseValues => {
   if (args.length > 4) throw new Error('Too many arguments');
 
   // Parse array argument from string to array. Throw error if it can't be parsed.
-  let array;
+  let array: number[];
   try {
     array = JSON.parse(process.argv[2]);
   } catch (e) {
@@ -33,14 +33,14 @@ const parseArguments = (args: Array<string>): calculateExerciseValues => {
     return {
       value1: array,
       value2: Number(args[3])
-    }
+    };
   } else {
     throw new Error('Second argument must be a number.');
   }
-}
+};
 
 // Input command line arguments, output object with all data
-const calculateExercises = (dailyExerciseHours: number[], targetHours: number) => {
+const calculateExercises = (dailyExerciseHours: number[], targetHours: number): Result => {
 
   // Training days are all non-zero days.
   const trainingDays = dailyExerciseHours.filter(day => day > 0);
@@ -64,7 +64,7 @@ const calculateExercises = (dailyExerciseHours: number[], targetHours: number) =
     } else {
       return 2;
     }
-  }
+  };
   
   const ratingDescription = (average: number, targetHours:number): string => {
     if (average < (targetHours * .5)){
@@ -74,7 +74,7 @@ const calculateExercises = (dailyExerciseHours: number[], targetHours: number) =
     } else {
       return "Not bad, but you could do better.";
     }
-  }
+  };
 
   const object = {
     periodLength,
@@ -84,18 +84,19 @@ const calculateExercises = (dailyExerciseHours: number[], targetHours: number) =
     ratingDescription: ratingDescription(average, targetHours),
     target: targetHours,
     average
-  }
+  };
 
-  // Console log instead of return to keep everything in command line
-  console.log(object)
-}
+  // Console log for command
+  console.log(object);
+  return object;
+};
 
 // Run function unless arguments throw errors
 try {
   const { value1, value2 } = parseArguments(process.argv);
   calculateExercises(value1, value2);
 } catch (error: unknown) {
-  let errorMessage = 'Something bad happened.'
+  let errorMessage = 'Something bad happened.';
   if (error instanceof Error) {
     errorMessage += ' Error: ' + error.message;
   }
